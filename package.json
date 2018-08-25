@@ -1,0 +1,22 @@
+{
+  "name": "bloccit",
+  "version": "1.0.0",
+  "description": "A Reddit-like application for users to discuss and share content.",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "export NODE_ENV=test && jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mouten57/bloccit.git"
+  },
+  "keywords": [
+    "bloccit"
+  ],
+  "author": "Matt Outen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mouten57/bloccit/issues"
+  },
+  "homepage": "https://github.com/mouten57/bloccit#readme"
+}
