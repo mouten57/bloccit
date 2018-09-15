@@ -8,7 +8,7 @@ router.get('/topics/:topicId/posts/new', postController.new);
 router.post('/topics/:topicId/posts/create', validation.validatePosts, postController.create);
 router.get('/topics/:topicId/posts/:id', postController.show);
 router.post('/topics/:topicId/posts/:id/destroy', postController.destroy);
-router.get('/topics/:topidId/posts/:id/edit', postController.edit);
-router.post('/topics/:topidId/posts/:id/update', validation.validatePosts, postController.update);
+router.get('/topics/:topicId/posts/:id/edit', postController.edit);
+router.post('/topics/:topicId/posts/:id/update', validation.validatePosts, postController.update);
 
 module.exports = router;
