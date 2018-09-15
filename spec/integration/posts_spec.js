@@ -37,7 +37,6 @@ describe("routes : posts", () => {
       });
     });
   });
-
   describe("GET /topics/:topicId/posts/new", () => {
     it("should render a new post form", (done) => {
       request.get(`${base}/${this.topic.id}/posts/new`, (err, res, body) => {
@@ -48,30 +47,49 @@ describe("routes : posts", () => {
     });
   });
   describe("POST /topics/:topicId/posts/create", () => {
-
     it("should create a new post and redirect", (done) => {
-       const options = {
-         url: `${base}/${this.topic.id}/posts/create`,
-         form: {
-           title: "Watching snow melt",
-           body: "Without a doubt my favoriting things to do besides watching paint dry!"
-         }
-       };
-       request.post(options, (err, res, body) => {
-           Post.findOne({where: {title: "Watching snow melt"}})
-           .then((post) => {
-             expect(post).not.toBeNull();
-             expect(post.title).toBe("Watching snow melt");
-             expect(post.body).toBe("Without a doubt my favoriting things to do besides watching paint dry!");
-             expect(post.topicId).not.toBeNull();
-             done();
-           })
-           .catch((err) => {
-             console.log(err);
-             done();
-           });
-         });
-     });
+      const options = {
+        url: `${base}/${this.topic.id}/posts/create`,
+        form: {
+          title: "Watching snow melt",
+          body: "Without a doubt my favorite thing to do besides watching paint dry!"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        Post.findOne({where: {title: "Watching snow melt"}})
+        .then((post) => {
+          expect(post).not.toBeNull();
+          expect(post.title).toBe("Watching snow melt");
+          expect(post.body).toBe("Without a doubt my favorite thing to do besides watching paint dry!");
+          expect(post.topicId).not.toBeNull();
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      });
+    });
+    it("should not create a new post that fails validations", (done) => {
+      const options = {
+        url: `${base}/${this.topic.id}/posts/create`,
+        form: {
+          title: "a",
+          body: "b"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        Post.findOne({where: {title: "a"}})
+        .then((post) => {
+          expect(post).toBeNull();
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      });
+    });
   });
   describe("GET /topics/:topicId/posts/:id", () => {
     it("should render a view with the selected post", (done) => {
@@ -91,7 +109,7 @@ describe("routes : posts", () => {
           expect(err).toBeNull();
           expect(post).toBeNull();
           done();
-        })
+        });
       });
     });
   });
@@ -106,41 +124,37 @@ describe("routes : posts", () => {
     });
   });
   describe("POST /topics/:topicId/posts/:id/update", () => {
-
     it("should return a status code 302", (done) => {
       request.post({
+          url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
+          form: {
+            title: "Snowman Building Competition",
+            body: "I love watching them melt slowly."
+          }
+        }, (err, res, body) => {
+            expect(res.statusCode).toBe(302);
+            done();
+        }
+      );
+    });
+    it("should update the post with the given values", (done) => {
+      const options = {
         url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
         form: {
           title: "Snowman Building Competition",
           body: "I love watching them melt slowly."
         }
-      }, (err, res, body) => {
-        expect(res.statusCode).toBe(302);
-        done();
+      };
+      request.post(options, (err, res, body) => {
+        expect(err).toBeNull();
+        Post.findOne({
+          where: {id: this.post.id}
+        })
+        .then((post) => {
+          expect(post.title).toBe("Snowman Building Competition");
+          done();
+        });
       });
     });
-
-    it("should update the post with the given values", (done) => {
-        const options = {
-          url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
-          form: {
-            title: "Snowman Building Competition"
-          }
-        };
-        request.post(options,
-          (err, res, body) => {
-
-          expect(err).toBeNull();
-
-          Post.findOne({
-            where: {id: this.post.id}
-          })
-          .then((post) => {
-            expect(post.title).toBe("Snowman Building Competition");
-            done();
-          });
-        });
-    });
-
   });
 });

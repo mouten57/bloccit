@@ -6,7 +6,7 @@ module.exports = {
       if(err) {
         res.redirect(500, "static/index", {title: "Welcome to Bloccit"});
       } else {
-        res.render("topics/index", {title: "Welcome to Bloccit", topics});
+        res.render("topics/index", {topics});
       }
     });
   },
