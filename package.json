@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "test": "export NODE_ENV=test && jasmine",
-    "start": "node src/server.js"
+    "start": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.32.6",
-    "sequelize-cli": "^4.1.1"
+    "sequelize-cli": "^4.1.1",
+    "nodemon": "^1.18.4"
   }
 }
