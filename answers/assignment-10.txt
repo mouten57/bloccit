@@ -1,0 +1,23 @@
+For this assignment, read more about the different strategies available for authenticating with Passport. Pick a strategy to study and write a high-level explanation of how it works. This explanation does not need to be technical.
+
+The strategy I've selected to explain is passport-facebook.
+
+To begin, you must register an application with Facebook at the Facebook Developers website. You will be issues an app ID and app secret, which will need to be provided to the strategy.
+
+This strategy authenticates users using a Facebook account and OAuth 2.0 tokens. The app ID and secret are provided as options when creating the strategy. In addition, there is a `verify` callback fucntion that retrieves the access token and `profile` which contains the facebook user's profile.
+
+To authenticate requests, you must use `passport.authenticate()` and then specify `facebook` as the strategy.
+
+For example (as route middleware in an Express app):
+
+```
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+  ```
