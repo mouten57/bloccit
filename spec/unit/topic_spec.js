@@ -1,87 +1,87 @@
 const sequelize = require("../../src/db/models/index").sequelize;
-const Topic = require('../../src/db/models').Topic;
+const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
+const User = require("../../src/db/models").User;
 
-describe('Topic', () => {
+describe("Topic", () => {
+  
+  beforeEach((done) => {
+    this.topic;
+    this.post;
+    this.user;
 
-    beforeEach((done) => {
+    sequelize.sync({force: true}).then((res) => {
 
-        this.topic;
-        this.post;
-        sequelize.sync({forc: true}).then((res) => {
-            Topic.create({
-                title: 'Expeditions to Alpha Centauri',
-                description: 'A compilation of reports from recent visits to the star system.'
-            })
-            .then((topic) => {
-                this.topic = topic;
+      User.create({
+        email: "starman@tesla.com",
+        password: "Trekkie4lyfe"
+      })
+      .then((user) => {
+        this.user = user;
 
-                Post.create({
-                    title: 'My first visit to Proxima Centauri b',
-                    body: 'I saw some rocks.',
-
-                    topicId: this.topic.id
-                })
-                .then((post) => {
-                    this.post = post;
-                    done();
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-                done();
-            });
+        Topic.create({
+          title: "Expeditions to Alpha Centauri",
+          description: "A compilation of reports from recent visits to the star system.",
+          posts: [{
+            title: "My first visit to Proxima Centauri b",
+            body: "I saw some rocks.",
+            userId: this.user.id
+          }]
+        }, {
+          include: {
+            model: Post,
+            as: "posts"
+          }
+        })
+        .then((topic) => {
+          this.topic = topic;
+          this.post = topic.posts[0];
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
         });
-        describe("#create()", () => {
-            it("should create a topic object with a title and description", (done) => {
-              Topic.create({
-                title: "Expeditions to ...",
-                description: "A compilation of reports from recent visits to the somewhere."
-              })
-              .then((topic) => {
-                expect(topic.title).toBe("Expeditions to ...");
-                expect(topic.description).toBe("A compilation of reports from recent visits to the somewhere.");
-                done();
-              })
-              .catch((err) => {
-                console.log(err);
-                done();
-              });
-            });
-            it("should not create a topic with missing title or description", (done) => {
-              Topic.create({
-                title: "Expeditions to Somewhere Else"
-              })
-              .then((post) => {
-                done();
-              })
-              .catch((err) => {
-                expect(err.message).toContain("Topic.description cannot be null");
-                done();
-              });
-            });
-          });
-        
-          describe("#getPosts()", () => {
-            it("should add a post to a topic, and return posts", (done) => {
-              Post.create({
-                title: "test",
-                body: "this is a test",
-                topicId: this.topic.id
-              })
-              .then((post) => {
-                this.topic.getPosts()
-                .then((posts) => {
-                  expect(this.topic.id).toBe(post.topicId);
-                  expect(this.topic.id).toBe(posts[1].topicId);
-                  done();
-                });
-              })
-              .catch((err) => {
-                console.log(err);
-                done();
-              });
-            });
-          });
+      });
     });
+  });
+  describe("#create()", () => {
+    it("should create a topic object with a title and description", (done) => {
+      Topic.create({
+        title: "JS Frameworks",
+        description: "There are a lot of them"
+      })
+      .then((topic) => {
+        expect(topic.title).toBe("JS Frameworks");
+        expect(topic.description).toBe("There are a lot of them");
+        done();
+      })
+      .catch((err) => {
+        console.log(err);
+        done();
+      });
+    });
+    it("should not create a topic with missing title or description", (done) => {
+      Topic.create({
+        title: "Angular is Better than React"
+      })
+      .then((topic) => {
+        //this code block will not be evaluated
+        done();
+      })
+      .catch((err) => {
+        expect(err.message).toContain("Topic.description cannot be null");
+        done();
+      });
+    });
+  });
+  describe("#getPosts()", () => {
+    it("should return the associated posts", (done) => {
+      this.topic.getPosts()
+      .then((posts) => {
+        expect(posts[0].title).toBe("My first visit to Proxima Centauri b");
+        done();
+      });
+    });
+  });
 });
