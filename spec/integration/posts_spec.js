@@ -130,7 +130,7 @@ describe("routes : posts", () => {
         request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).not.toContain("Edit Post");
-          expect(body).toContain("Snowball Fighting");
+          expect(body).not.toContain("Snowball Fighting");
           done();
         });
       });

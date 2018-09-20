@@ -32,7 +32,6 @@ module.exports = {
       };
     topicQueries.addTopic(newTopic, (err, topic) => {
       if(err){
-        console.log('error')
         res.redirect(500, '/topics/new');
       } else {
         res.redirect(303, `/topics/${topic.id}`)
@@ -55,7 +54,6 @@ module.exports = {
   destroy(req, res, next){
     topicQueries.deleteTopic(req, (err, topic) => {
       if(err) {
-        console.log(err);
         res.redirect(err, `/topics/${req.params.id}`)
       } else {
           res.redirect(303, "/topics")

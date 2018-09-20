@@ -40,6 +40,7 @@ module.exports = {
   },
   deleteTopic(req, callback) {
     return Topic.findById(req.params.id)
+    
     .then((topic) => {
       const authorized = new Authorizer(req.user, topic).destroy();
 
