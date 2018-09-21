@@ -66,6 +66,7 @@ describe("routes : comments", () => {
     });
 
     describe("guest attempting to perform CRUD actions for Comment", () => {
+
         beforeEach((done) => {    // before each suite in this context
             request.get({           // mock authentication
                 url: "http://localhost:3000/auth/fake",
@@ -202,4 +203,92 @@ describe("routes : comments", () => {
 
     });
 
+    describe("another signed in user attempting to perform CRUD actions for Comment", () => {
+    
+        beforeEach((done) => {
+          User.create({
+            email: "bob@example.com",
+            password: "123123",
+            role: "member"
+          })
+          .then((user) => {
+            request.get({ // mock authentication
+              url: "http://localhost:3000/auth/fake",
+              form: {
+                role: "member", // mock authenticate as another member user
+                userId: user.id, 
+                email: user.email
+              }
+            },
+              (err, res, body) => {
+                done();
+              }
+            );
+          });
+        });
+    
+        describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+          it("should NOT delete the original comment with the original associated ID", (done) => {
+            Comment.all()
+            .then((comments) => {
+              const commentCountBeforeDelete = comments.length;
+              expect(commentCountBeforeDelete).toBe(1);
+              request.post(`${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`, (err, res, body) => {
+                expect(res.statusCode).toBe(401);
+                Comment.all()
+                .then((comments) => {
+                  expect(err).toBeNull();
+                  expect(comments.length).toBe(commentCountBeforeDelete);
+                  done();
+                });
+              });
+            });
+          });
+        });
+    });
+
+    describe("signed in admin user attempting to perform CRUD actions for Comment", () => {
+        
+        beforeEach((done) => {
+          User.create({
+            email: "admin@example.com",
+            password: "123123",
+            role: "admin"
+          })
+          .then((user) => {
+            request.get({ // mock authentication
+              url: "http://localhost:3000/auth/fake",
+              form: {
+                role: user.role, // mock authenticate as another member user
+                userId: user.id, //new user id
+                email: user.email
+              }
+            },
+              (err, res, body) => {
+                done();
+              }
+            );
+          });
+        });
+    
+        describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+          it("should delete the original comment with the original associated ID", (done) => {
+            Comment.all()
+            .then((comments) => {
+              const commentCountBeforeDelete = comments.length;
+              expect(commentCountBeforeDelete).toBe(1);
+              request.post(`${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`, (err, res, body) => {
+                expect(res.statusCode).toBe(302);
+                Comment.all()
+                .then((comments) => {
+                  expect(err).toBeNull();
+                  expect(comments.length).toBe(commentCountBeforeDelete - 1);
+                  done();
+                });
+              });
+            });
+          });
+        });
+    });
+    
 });
