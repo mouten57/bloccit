@@ -14,14 +14,21 @@
           <% include ../votes/voting.ejs %>
         <% } %>
 
-          <h1><%= post.title %></h1>
+          <h4 class='post-title'style='width:50%'><%= post.title %></h4>
+          <div style='margin: 0 auto;width:50%;display: inline-block'> 
+            <a href="/topics/<%= post.topicId %>" class="btn btn-outline-info btn-sm"><i class="fas fa-arrow-left"></i></a>
+            <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-outline-warning btn-sm"><i class="fas fa-edit"></i></a>
+              <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
+                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+              </form>
+              <% if(currentUser) { %>
+                <% include ../favorites/favoriting.ejs %>
+              <% } %>
+            </div>
         </div>
-      <a href="/topics/<%= post.topicId %>" class="btn btn-outline-info btn-sm">Back to Topic </a>
       
-      <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-outline-warning btn-sm">Edit</a>
-        <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
-          <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-        </form>
+
+      
 
       <p><%= post.body %></p>
       <section id="comment-form">

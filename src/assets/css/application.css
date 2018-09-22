@@ -1,3 +1,15 @@
 body {
     padding-top: 54px;
 }
+
+.new-post, .new-topic {
+    display: inline-block;
+    margin-bottom: 18px;
+    margin-left: 5px;
+}
+
+.posts-title, .topics-title {
+    display: inline-block;
+}
+
+

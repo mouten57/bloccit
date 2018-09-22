@@ -11,22 +11,24 @@
       <% include ../static/partials/messages.ejs %>
 
       <h1><%= topic.title %></h1>
-      <a href="/topics/" class="btn btn-outline-info btn-sm">Back to Topics</a>
+      <a href="/topics/" class="btn btn-outline-info btn-sm"><i class="fas fa-arrow-left"></i></a>
 
       <% if(currentUser) { %>
-        <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-outline-success btn-sm">New Post</a>
         <% if(currentUser.isAdmin()) { %>
-          <a href="/topics/<%= topic.id %>/edit" class="btn btn-outline-warning btn-sm">Edit</a>
+          <a href="/topics/<%= topic.id %>/edit" class="btn btn-outline-warning btn-sm"><i class="fas fa-edit"></i></a>
           <form style="display:initial" action="/topics/<%= topic.id %>/destroy" method="post">
-            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
           </form>
         <% } %>
       <% } %>
 
       <p><%= topic.description %></p>
       <hr>
-      <h1>Posts</h1>
-
+      <h1 class='posts-title'>Posts</h1>
+      <% if(currentUser) { %>
+        <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-outline-success btn-sm new-post"><i class="fas fa-plus"></i></a>
+        <% } %>
+        
       <ul class="list-group">
         <% topic.posts.forEach((post) => { %>
           <li class="list-group-item">

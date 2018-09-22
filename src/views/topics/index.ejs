@@ -7,9 +7,9 @@
     <main class="container">
       <% include ../static/partials/navbar.ejs %>
 
-      <h1>Topics</h1>
+      <h1 class='topics-title'>Topics</h1>
       <% if(currentUser && currentUser.isAdmin()) { %>
-        <a href="/topics/new" class="btn btn-success">New Topic</a>
+        <a href="/topics/new" class="btn btn-success new-topic"><i class="fas fa-plus"></i></a>
       <% } %>
 
       <ul class="list-group">
