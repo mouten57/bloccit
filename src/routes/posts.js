@@ -5,6 +5,9 @@ const postController = require('../controllers/postController');
 const validation = require('./validation')
 const helper = require('../auth/helpers');
 
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'});
+
 router.get('/topics/:topicId/posts/new', postController.new);
 router.post('/topics/:topicId/posts/create',
     helper.ensureAuthenticated,
