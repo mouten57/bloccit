@@ -15,9 +15,8 @@ module.exports = {
         postId: req.params.postId
       };
 
-
+      
       commentQueries.createComment(newComment, (err, comment) => {
-
         if(err){
           req.flash("error", err);
         }
@@ -25,7 +24,7 @@ module.exports = {
       });
     } else {
       req.flash("notice", "You must be signed in to do that.")
-      req.redirect("/users/sign_in");
+      res.redirect("/users/sign_in");
     }
   },
 

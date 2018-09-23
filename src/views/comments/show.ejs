@@ -1,22 +1,20 @@
 <% if(comment) { %>
-    <div style="width: 50%">
-    <hr>
+    <div style="width: 100%">
+        <hr>
     <p style='margin-bottom: 0'>
         <%= comment.body %>
     </p>
     <small class="card-subtitle mb-2 text-muted">
         sent by <%= comment.User.email %> on <%= comment.createdAt %>
+        
     </small>
 
-    <% if(currentUser && currentUser.id === comment.userId) { %>
-        <% if(currentUser.isAdmin) { %>
-        <form style="display:initial"
+    <% if(currentUser && (currentUser.id === comment.userId || currentUser.isAdmin())) { %>
+        <form style="display:initial;"
             action="/topics/<%= post.topicId %>/posts/<%= post.id %>/comments/<%= comment.id %>/destroy"
             method="post">
-            <button type="submit" class="btn btn btn-sm btn-outline-danger"style='float: right'>Delete</button>
+            <button type="submit" class="btn btn btn-sm btn-outline-danger"style='float: right;'>Delete</button>
         </form>
-        <% } %>
     <% } %>
-    <hr>
     </div>
 <% } %>

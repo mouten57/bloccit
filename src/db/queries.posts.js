@@ -44,7 +44,6 @@ module.exports = {
                     callback(null, deletedRecordsCount);
                 });
             } else {
-                req.flash('notice', "You are not authorized to do that.");
                 callback(401, null);
             }
         })

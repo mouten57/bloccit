@@ -26,21 +26,20 @@
               <% } %>
             </div>
         </div>
-      
-
-      
-
+    
       <p><%= post.body %></p>
+
       <section id="comment-form">
         <% if(currentUser) { %>
           <% include ../comments/new.ejs %>
         <% } %>
       </section>
 
-      <section id='comment-list' style='width: 200%'>
+      <section id='comment-list' style='width: 100%'>
         <% if(post.comments) { %>
           <% post.comments.forEach((comment) => { %>
-            <% include('../comments/show.ejs', {comment}) %>
+            
+            <%- include('../comments/show.ejs', {comment}) %>
           <% }) %>
         <% } %>
       </section>

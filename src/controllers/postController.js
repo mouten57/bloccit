@@ -44,7 +44,8 @@ module.exports = {
     destroy(req, res, next){
         postQueries.deletePost(req, (err, post) => {
             if(err){
-                res.redirect(err, `/topics/${req.params.topicId}/posts/${req.params.id}`)
+                req.flash("notice", "You are not authorized to do that.");
+                res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
             } else {
                 const authorized = new Authorizer(req.user, post).destroy();
                 if(authorized){
