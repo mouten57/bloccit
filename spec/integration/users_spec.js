@@ -4,8 +4,8 @@ const base = "http://localhost:3000/users/";
 const User = require("../../src/db/models").User;
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
- const Post = require("../../src/db/models").Post;
- const Comment = require("../../src/db/models").Comment;
+const Post = require("../../src/db/models").Post;
+const Comment = require("../../src/db/models").Comment;
 
 describe("routes : users", () => {
 
@@ -101,13 +101,14 @@ describe("routes : users", () => {
                   this.user;
                   this.post;
                   this.comment;
+                  this.topic;
            
                   User.create({
                     email: "starman@tesla.com",
                     password: "Trekkie4lyfe"
                   })
-                  .then((res) => {
-                    this.user = res;
+                  .then((user) => {
+                    this.user = user;
            
                     Topic.create({
                       title: "Winter Games",
@@ -123,8 +124,9 @@ describe("routes : users", () => {
                         as: "posts"
                       }
                     })
-                    .then((res) => {
-                      this.post = res.posts[0];
+                    .then((topic) => {
+                        this.topic = topic;
+                        this.post =topic.posts[0];
            
                       Comment.create({
                         body: "This comment is alright.",
@@ -150,6 +152,27 @@ describe("routes : users", () => {
             });
      
 
+        });
+
+        it("should present a list of posts a user has favorited", (done) => {
+            Post.create({
+              title: "Snowman Building",
+              body: "Would you like to build a snowman?",
+              topicId: this.topic.id,
+              userId: this.user.id
+            })
+            .then(() => {
+              request.get(`${base}${this.user.id}`, (err, res, body) => {
+                expect(body).toContain("Favorites");
+                expect(body).toContain("Snowball Fighting"); //the automatically favorited post created in the beforeEach
+                expect(body).toContain("Snowman Building");
+                done();
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            });
         });
 
     });
