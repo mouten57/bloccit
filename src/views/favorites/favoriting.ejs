@@ -1,7 +1,7 @@
 <% const favorite = post.getFavoriteFor(currentUser.id) %>
 <% if(favorite) { %>
   <form style="display: initial;" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/favorites/<%= favorite.id %>/destroy" method="post">
-    <button type="submit" class="btn btn-outline-primary btn-sm"></i>Unfavorite</button>
+    <button type="submit" class="btn btn-outline-primary btn-sm"></i><i class="fas fa-star"></i></button>
   </form>
 <% } else { %>
   <form style="display: initial;" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/favorites/create" method="post">
