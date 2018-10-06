@@ -1,5 +1,6 @@
 const postQueries = require('../db/queries.posts.js');
 const Authorizer = require('../policies/post');
+const markdown = require("markdown").markdown;
 
 module.exports = {
     new(req, res, next) {
@@ -37,6 +38,7 @@ module.exports = {
             if(err || post == null){
                 res.redirect(404, '/');
             } else {
+                post.body = markdown.toHTML(post.body);
                 res.render('posts/show', {post});
             }
         });
