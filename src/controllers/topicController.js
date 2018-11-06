@@ -30,13 +30,13 @@ module.exports = {
         title: req.body.title,
         description: req.body.description
       };
-    topicQueries.addTopic(newTopic, (err, topic) => {
-      if(err){
-        res.redirect(500, '/topics/new');
-      } else {
-        res.redirect(303, `/topics/${topic.id}`)
-      }
-    });
+      topicQueries.addTopic(newTopic, (err, topic) => {
+        if(err){
+          res.redirect(500, '/topics/new');
+        } else {
+          res.redirect(303, `/topics/${topic.id}`)
+        }
+      });
     } else {
       req.flash("notice", "You are not authorized to do that.");
       res.redirect("/topics");
@@ -84,6 +84,9 @@ module.exports = {
     });
   },
   update(req, res, next) {
+    //by passing req instead of req.params.id, it allows us to use other
+    //properties of req like req.user
+    //req.body is our new, updated topic according to what we put in the form
     topicQueries.updateTopic(req, req.body, (err, topic) => {
       if(err || topic == null) {
         res.redirect(401, `/topics/${req.params.id}/edit`);
