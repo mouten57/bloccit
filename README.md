@@ -1,5 +1,7 @@
 Made while working at [bloc](www.bloc.io)
 
+- [live deployment](https://mouten57-bloccit.herokuapp.com/)
+
 ### Description
 
 FamCHAT is a reddit-style app that allows users to post,
