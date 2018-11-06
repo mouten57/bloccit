@@ -1,4 +1,4 @@
-Made while working at ![bloc](www.bloc.io)
+Made while working at [bloc](www.bloc.io)
 
 ###Description
 FamCHAT is a reddit-style app that allows users to post,
