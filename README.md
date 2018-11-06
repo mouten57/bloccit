@@ -15,3 +15,10 @@ and voting amongst others.
 - Views constructed with EJS
 - All entries validated with express-validator
 - Fully tested with TDD using Jasmine
+
+### How to run
+
+1. Clone
+2. Open
+3. run `npm install`
+4. run `npm start`
